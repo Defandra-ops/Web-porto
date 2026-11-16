@@ -1,0 +1,53 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Defandra Rifky W. — Fullstack Engineer & IT Support",
+  description = "Portofolio Defandra Rifky, Fullstack Engineer & IT Support. Menjelajahi antarmuka, sistem, dan infrastruktur dengan pendekatan praktis.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#faf9f6" />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+    <dialog class="image-lightbox" aria-label="Pratinjau gambar" data-image-lightbox>
+      <div class="image-lightbox-content">
+        <div class="image-lightbox-toolbar">
+          <p class="micro-label" data-image-lightbox-caption>SCREENSHOT PREVIEW</p>
+          <button class="brutal-btn preview-close" type="button" data-image-lightbox-close aria-label="Tutup pratinjau gambar">
+            TUTUP ×
+          </button>
+        </div>
+        <img class="image-lightbox-image" src="" alt="" data-image-lightbox-image />
+        <div class="image-lightbox-controls">
+          <button class="brutal-btn image-lightbox-nav" type="button" data-image-lightbox-previous aria-label="Lihat screenshot sebelumnya">
+            ← SEBELUMNYA
+          </button>
+          <span class="image-lightbox-count" aria-live="polite" data-image-lightbox-count></span>
+          <button class="brutal-btn image-lightbox-nav" type="button" data-image-lightbox-next aria-label="Lihat screenshot berikutnya">
+            BERIKUTNYA →
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <script>
+      import "../scripts/motion.ts";
+      import "../scripts/interactions.ts";
+    </script>
+  </body>
+</html>

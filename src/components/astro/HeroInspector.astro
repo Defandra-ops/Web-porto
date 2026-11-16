@@ -1,0 +1,78 @@
+---
+const pillars = [
+  {
+    id: "frontend",
+    eyebrow: "01 / INTERFACE",
+    title: "Frontend Engineering",
+    stack: ["Vue 3", "Astro", "Tailwind CSS"],
+    description:
+      "Antarmuka yang responsif, komponen yang terstruktur, dan pengalaman yang tetap cepat di berbagai perangkat.",
+    color: "coral",
+  },
+  {
+    id: "fullstack",
+    eyebrow: "02 / SYSTEMS",
+    title: "Backend & API",
+    stack: ["REST API", "Database", "Integrasi"],
+    description:
+      "Alur data yang mudah dipahami, terhubung dengan baik, dan dirancang sesuai kebutuhan produk.",
+    color: "teal",
+  },
+  {
+    id: "support",
+    eyebrow: "03 / OPERATIONS",
+    title: "IT Support & Infra",
+    stack: ["Troubleshooting", "Network", "Deployment"],
+    description:
+      "Pendekatan praktis untuk diagnosis masalah, dukungan pengguna, dan keandalan operasional.",
+    color: "yellow",
+  },
+];
+---
+
+<section class="inspector" aria-label="Pilih fokus keahlian" data-inspector>
+  <div class="inspector-topline">
+    <span class="micro-label">FOCUS INSPECTOR</span>
+    <span class="live-status"><i aria-hidden="true"></i> READY</span>
+  </div>
+  <div class="inspector-tabs" role="tablist" aria-label="Fokus keahlian">
+    {pillars.map((pillar, index) => (
+      <button
+        class:list={[
+          "inspector-tab",
+          `tab-${pillar.color}`,
+          { "is-active": index === 0 },
+        ]}
+        type="button"
+        role="tab"
+        aria-selected={index === 0 ? "true" : "false"}
+        aria-controls={`pillar-panel-${pillar.id}`}
+        data-inspector-tab={pillar.id}
+      >
+        {pillar.id}
+      </button>
+    ))}
+  </div>
+  {pillars.map((pillar, index) => (
+    <article
+      id={`pillar-panel-${pillar.id}`}
+      class={`inspector-card panel-${pillar.color}`}
+      role="tabpanel"
+      aria-label={pillar.title}
+      tabindex="0"
+      data-inspector-panel={pillar.id}
+      hidden={index !== 0}
+    >
+      <div class="panel-inner">
+        <p class="micro-label">{pillar.eyebrow}</p>
+        <h2>{pillar.title}</h2>
+        <p class="inspector-description">{pillar.description}</p>
+        <ul class="stack-list" aria-label="Teknologi dan area">
+          {pillar.stack.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <span class="panel-index" aria-hidden="true">0{index + 1}</span>
+    </article>
+  ))}
+  <p class="inspector-hint"><span aria-hidden="true">↳</span> PILIH PILAR UNTUK MELIHAT DETAIL</p>
+</section>

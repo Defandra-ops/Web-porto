@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/astro/Navbar.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/\.md$/, "") },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} — Defandra Rifky`}>
+  <Navbar />
+  <main class="case-study section-shell">
+    <a class="back-link" href="/#projects">← KEMBALI KE PROYEK</a>
+    <header class="case-study-header">
+      <p class="section-index">CASE STUDY / {project.data.category.toUpperCase()}</p>
+      <h1>{project.data.title}</h1>
+      <p class="case-study-excerpt">{project.data.excerpt}</p>
+      {project.data.example && <p class="example-notice case-study-notice"><span>!</span> Konten contoh — perbarui dengan studi kasus asli sebelum dipublikasikan.</p>}
+      <div class="case-study-meta">
+        <div><span>PERAN</span><strong>{project.data.role}</strong></div>
+        <div><span>TEKNOLOGI</span><ul>{project.data.stack.map((item) => <li>{item}</li>)}</ul></div>
+      </div>
+      <div class="case-study-links">
+        {project.data.demoUrl && <a class="brutal-btn button-primary" href={project.data.demoUrl} target="_blank" rel="noreferrer">BUKA LIVE DEMO <span aria-hidden="true">↗</span></a>}
+        {project.data.repoUrl && <a class="brutal-btn case-study-repo" href={project.data.repoUrl} target="_blank" rel="noreferrer">LIHAT REPOSITORY <span aria-hidden="true">↗</span></a>}
+        {project.data.designUrl && <a class="brutal-btn case-study-design" href={project.data.designUrl} target="_blank" rel="noreferrer">LIHAT DESAIN FIGMA <span aria-hidden="true">↗</span></a>}
+      </div>
+    </header>
+    <div class="case-study-summary">
+      <article><span>THE CHALLENGE</span><h2>Masalah</h2><p>{project.data.problem}</p></article>
+      <article><span>THE APPROACH</span><h2>Pendekatan</h2><p>{project.data.solution}</p></article>
+    </div>
+    <section class="case-study-gallery" aria-label={`Screenshot proyek ${project.data.title}`}>
+      <div class="gallery-heading">
+        <p class="section-index">VISUAL / PROJECT SCREENSHOTS</p>
+        <h2>Di balik layar.</h2>
+      </div>
+      {project.data.screenshots.length > 0 ? (
+        <div class="gallery-grid">
+          {project.data.screenshots.map((screenshot, index) => (
+            <figure class="gallery-image">
+              <button
+                class="gallery-image-trigger"
+                type="button"
+                data-image-preview
+                data-image-preview-src={screenshot.src}
+                data-image-preview-alt={screenshot.alt}
+                data-image-preview-index={index}
+                aria-label={`Perbesar screenshot: ${screenshot.alt}`}
+                aria-haspopup="dialog"
+              >
+                <img src={screenshot.src} alt="" loading="lazy" decoding="async" />
+                <span class="image-zoom-hint" aria-hidden="true">KLIK UNTUK PERBESAR ↗</span>
+              </button>
+              <figcaption>{screenshot.alt}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <template data-image-preview-set>
+          {project.data.screenshots.map((screenshot) => (
+            <img src={screenshot.src} alt={screenshot.alt} />
+          ))}
+        </template>
+      ) : (
+        <div class="gallery-placeholder">
+          <div class="preview-toolbar"><span></span><span></span><span></span><small>PROJECT SCREENSHOTS</small></div>
+          <div class="gallery-placeholder-content">
+            <span class="preview-image-icon" aria-hidden="true">▧</span>
+            <h3>Belum ada screenshot untuk proyek ini.</h3>
+            {/* <p>Tambahkan gambar ke <code>public/images/project-screenshots/</code>, lalu daftarkan di frontmatter proyek.</p> */}
+          </div>
+        </div>
+      )}
+    </section>
+    <article class="prose-content"><Content /></article>
+    <div class="case-study-end">
+      <a class="brutal-btn button-primary" href="/#projects">KEMBALI KE SEMUA PROYEK <span aria-hidden="true">↗</span></a>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="section-shell footer-inner"><a class="wordmark" href="/"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a><p>DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p><span>© {new Date().getFullYear()} DEFANDRA RIFKY</span></div></footer>
+</BaseLayout>

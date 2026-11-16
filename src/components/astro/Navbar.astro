@@ -1,0 +1,28 @@
+---
+const links = [
+  { label: "Proyek", href: "/#projects" },
+  { label: "Keahlian", href: "/#skills" },
+  { label: "Pengalaman", href: "/#experience" },
+  { label: "Sertifikasi", href: "/#certifications" },
+];
+---
+
+<header class="site-header">
+  <nav class="nav-shell" aria-label="Navigasi utama">
+    <a class="wordmark" href="/" aria-label="Defandra Rifky, beranda">
+      <span class="wordmark-mark">DR</span>
+      <span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span>
+    </a>
+    <div class="desktop-nav">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </div>
+    <a class="brutal-btn nav-cta" href="/#contact">Hubungi Saya <span aria-hidden="true">↗</span></a>
+    <details class="mobile-menu">
+      <summary aria-label="Buka navigasi">MENU <span aria-hidden="true">+</span></summary>
+      <div class="mobile-menu-panel">
+        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        <a href="/#contact">Hubungi Saya ↗</a>
+      </div>
+    </details>
+  </nav>
+</header>

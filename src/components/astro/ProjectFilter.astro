@@ -1,0 +1,156 @@
+---
+interface Project {
+  title: string;
+  excerpt: string;
+  category: string;
+  role: string;
+  stack: string[];
+  slug: string;
+  example: boolean;
+  demoUrl?: string;
+  repoUrl?: string;
+  designUrl?: string;
+  screenshots: { src: string; alt: string }[];
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const filters = ["Semua", "Fullstack", "Mobile", "IT Support", "UI/UX"];
+---
+
+<div class="project-browser" data-project-browser>
+  <div class="project-filters" role="group" aria-label="Filter proyek berdasarkan kategori">
+    {filters.map((filter) => (
+      <button
+        class:list={["filter-button", { "is-selected": filter === "Semua" }]}
+        type="button"
+        aria-pressed={filter === "Semua" ? "true" : "false"}
+        data-project-filter={filter}
+      >
+        {filter}
+        {filter === "Semua" && <span class="filter-count">{projects.length}</span>}
+      </button>
+    ))}
+  </div>
+  <p class="sr-only" aria-live="polite" data-project-count>{projects.length} proyek ditampilkan</p>
+  <div class="project-list">
+    {projects.map((project, index) => (
+      <article
+        class={`project-card brutal-reveal project-card-${index % 2 === 0 ? "coral" : "teal"}`}
+        data-project-card
+        data-category={project.category}
+      >
+        <figure class="project-preview">
+          {project.screenshots.length > 0 ? (
+            <button
+              class="project-preview-trigger"
+              type="button"
+              data-image-preview
+              data-image-preview-src={project.screenshots[0].src}
+              data-image-preview-alt={project.screenshots[0].alt}
+              data-image-preview-index="0"
+              aria-label={`Perbesar screenshot: ${project.screenshots[0].alt}`}
+              aria-haspopup="dialog"
+            >
+              <img
+                src={project.screenshots[0].src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-zoom-hint" aria-hidden="true">PERBESAR ↗</span>
+            </button>
+          ) : (
+            <div class="project-preview-placeholder" role="img" aria-label={`Screenshot ${project.title} belum ditambahkan`}>
+              <div class="preview-toolbar"><span></span><span></span><span></span><small>PROJECT PREVIEW</small></div>
+              <div class="preview-placeholder-content">
+                <span class="preview-image-icon" aria-hidden="true">▧</span>
+                <strong>SCREENSHOT BELUM TERSEDIA</strong>
+                <small>Tambahkan capture proyek untuk preview</small>
+              </div>
+              <div class="preview-placeholder-footer">{project.category} / {project.stack.slice(0, 2).join(" · ")}</div>
+            </div>
+          )}
+        </figure>
+        {project.screenshots.length > 0 && (
+          <template data-image-preview-set>
+            {project.screenshots.map((screenshot) => (
+              <img src={screenshot.src} alt={screenshot.alt} />
+            ))}
+          </template>
+        )}
+        <div class="project-card-number">PROJECT / {String(index + 1).padStart(2, "0")}</div>
+        <div class="project-card-main">
+          <div class="project-title-line">
+            <h3>{project.title}</h3>
+            <span class="project-category">{project.category}</span>
+          </div>
+          <p class="project-role">{project.role}</p>
+          <p class="project-excerpt">{project.excerpt}</p>
+          <ul class="project-stack" aria-label="Teknologi yang digunakan">
+            {project.stack.map((technology) => <li>{technology}</li>)}
+          </ul>
+        </div>
+        <div class="project-actions">
+          <a class="project-link" href={`/projects/${project.slug}/`}>
+            <span>Lihat studi kasus</span><span aria-hidden="true">↗</span>
+          </a>
+          {project.repoUrl && (
+            <a class="project-link project-repo-link" href={project.repoUrl} target="_blank" rel="noreferrer">
+              <span>Lihat GitHub</span><span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {project.designUrl && (
+            <a class="project-link project-repo-link" href={project.designUrl} target="_blank" rel="noreferrer">
+              <span>Lihat desain</span><span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {project.demoUrl ? (
+            <button
+              class="project-link project-preview-link"
+              type="button"
+              data-project-preview-url={project.demoUrl}
+              data-project-preview-title={project.title}
+              aria-haspopup="dialog"
+            >
+              <span>Coba aplikasi</span><span aria-hidden="true">↗</span>
+            </button>
+          ) : (
+            <span class="project-demo-status">LIVE PREVIEW / BELUM TERSEDIA</span>
+          )}
+        </div>
+        {project.example && <span class="example-stamp">CONTOH KONTEN</span>}
+      </article>
+    ))}
+    <p class="empty-projects" data-project-empty hidden>Belum ada proyek di kategori ini.</p>
+  </div>
+</div>
+<dialog class="project-preview-dialog" aria-labelledby="project-preview-title" data-project-preview-dialog>
+  <div class="project-preview-dialog-content">
+    <header class="project-preview-dialog-header">
+      <div>
+        <p class="micro-label">LIVE APPLICATION PREVIEW</p>
+        <h2 id="project-preview-title" data-project-preview-title>Preview aplikasi</h2>
+      </div>
+      <button class="brutal-btn preview-close" type="button" data-project-preview-close aria-label="Tutup preview">TUTUP ×</button>
+    </header>
+    <p class="project-preview-status" role="status" aria-live="polite" data-project-preview-status></p>
+    <iframe
+      class="project-preview-frame"
+      src="about:blank"
+      title="Preview aplikasi"
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      data-project-preview-frame
+    ></iframe>
+    <footer class="project-preview-dialog-footer">
+      <span>Jika aplikasi tidak dapat dimuat, situs tujuan mungkin membatasi tampilan di dalam iframe.</span>
+      <a class="project-link" href="#" target="_blank" rel="noreferrer" data-project-preview-external hidden>
+        <span>Buka di tab baru</span><span aria-hidden="true">↗</span>
+      </a>
+    </footer>
+  </div>
+</dialog>

@@ -1,0 +1,106 @@
+---
+import type { Certification, CertificationCategory } from "../../data/certifications";
+
+interface Props {
+  certifications: Certification[];
+  categoryHeadingLevel?: 2 | 3;
+}
+
+const { certifications, categoryHeadingLevel = 2 } = Astro.props;
+const categories: {
+  id: CertificationCategory;
+  title: string;
+  description: string;
+  emptyMessage: string;
+}[] = [
+  {
+    id: "language",
+    title: "Language Certification",
+    description: "Sertifikasi kemampuan bahasa dan komunikasi.",
+    emptyMessage: "Belum ada sertifikasi bahasa yang ditambahkan.",
+  },
+  {
+    id: "skills",
+    title: "Skills Certification",
+    description: "Kredensial teknis, pelatihan, dan sertifikasi kompetensi.",
+    emptyMessage: "Belum ada sertifikasi keterampilan yang ditambahkan.",
+  },
+];
+---
+
+<div class="certification-categories">
+  {categories.map((category) => {
+    const items = certifications.filter((certification) => certification.category === category.id);
+    return (
+      <section class="certification-category" aria-labelledby={`certification-${category.id}-title`}>
+        <div class="certification-category-heading">
+          <div>
+            <p class="micro-label">CATEGORY / {category.id.toUpperCase()}</p>
+            {categoryHeadingLevel === 2 ? (
+              <h2 id={`certification-${category.id}-title`}>{category.title}</h2>
+            ) : (
+              <h3 id={`certification-${category.id}-title`}>{category.title}</h3>
+            )}
+          </div>
+          <p>{category.description}</p>
+        </div>
+        {items.length > 0 ? (
+          <div class="certification-grid">
+            {items.map((certification, index) => (
+              <article class={`certification-card certification-card-${index % 2 === 0 ? "coral" : "teal"}`}>
+                {certification.image && (
+                  <figure class="certification-image">
+                    <img
+                      src={certification.image.src}
+                      alt={certification.image.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                )}
+                <div class="certification-card-content">
+                  <p class="micro-label">CREDENTIAL / {String(index + 1).padStart(2, "0")}</p>
+                  {categoryHeadingLevel === 2 ? (
+                    <h3>{certification.title}</h3>
+                  ) : (
+                    <h4>{certification.title}</h4>
+                  )}
+                  <p class="certification-issuer">{certification.issuer}</p>
+                  <p class="certification-date">DITERBITKAN / {certification.issuedAt}</p>
+                  {certification.description && (
+                    <p class="certification-description">{certification.description}</p>
+                  )}
+                  {certification.credentialId && (
+                    <p class="certification-id">ID KREDENSIAL / {certification.credentialId}</p>
+                  )}
+                  {certification.credentialUrl && (
+                    <a
+                      class="project-link certification-verify"
+                      href={certification.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>Verifikasi kredensial</span><span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  {certification.fileUrl && (
+                    <a
+                      class="project-link certification-verify"
+                      href={certification.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>Lihat sertifikat (PDF)</span><span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="certification-category-empty">{category.emptyMessage}</p>
+        )}
+      </section>
+    );
+  })}
+</div>

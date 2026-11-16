@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/astro/Navbar.astro";
+import CertificationSections from "../components/astro/CertificationSections.astro";
+import { certifications } from "../data/certifications";
+---
+
+<BaseLayout
+  title="Sertifikasi — Defandra Rifky"
+  description="Sertifikasi dan kredensial profesional Defandra Rifky."
+>
+  <Navbar />
+  <main class="certifications-page section-shell section-pad">
+    <a class="back-link" href="/">← KEMBALI KE BERANDA</a>
+    <header class="certifications-header">
+      <p class="section-index">04 — CERTIFICATIONS & CREDENTIALS</p>
+      <h1>Sertifikasi<span class="outline-title">.</span></h1>
+      <p class="certifications-intro">
+        Kumpulan sertifikasi dan kredensial profesional yang mendukung perjalanan saya di bidang teknologi.
+      </p>
+    </header>
+
+    <CertificationSections certifications={certifications} />
+
+    <div class="certifications-back">
+      <a class="brutal-btn button-primary" href="/#experience">LIHAT PENGALAMAN <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="/#contact">HUBUNGI SAYA <span aria-hidden="true">↗</span></a>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="section-shell footer-inner">
+      <a class="wordmark" href="/"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a>
+      <p>DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p>
+      <a href="/#projects">PROYEK ↗</a>
+      <a href="/#certifications">SERTIFIKASI ↗</a>
+      <span>© {new Date().getFullYear()} DEFANDRA RIFKY</span>
+    </div>
+  </footer>
+</BaseLayout>

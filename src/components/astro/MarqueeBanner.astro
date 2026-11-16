@@ -1,0 +1,17 @@
+---
+interface Props {
+  items?: string[];
+  label?: string;
+}
+
+const { items = ["Frontend Architecture", "Backend & API", "IT Infrastructure"], label = "Area fokus" } = Astro.props;
+const ticker = [...items, ...items];
+---
+
+<div class="marquee-wrapper" aria-label={`${label}: ${items.join(", ")}`}>
+  <div class="marquee-track" aria-hidden="true">
+    {ticker.map((item) => (
+      <span class="marquee-item">{item}<span class="marquee-star">✳</span></span>
+    ))}
+  </div>
+</div>
