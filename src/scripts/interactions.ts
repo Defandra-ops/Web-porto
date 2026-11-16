@@ -20,20 +20,36 @@ function setupProjectFilters() {
           const url = button.dataset.projectPreviewUrl;
           if (!url) return;
 
-          const projectTitle = button.dataset.projectPreviewTitle ?? "Preview aplikasi";
+          const language = document.documentElement.lang;
+          const projectTitle =
+            language === "ja"
+              ? button.dataset.projectPreviewTitleJa ?? button.dataset.projectPreviewTitle ?? "アプリのプレビュー"
+              : language === "en"
+                ? button.dataset.projectPreviewTitleEn ?? button.dataset.projectPreviewTitle ?? "App preview"
+                : button.dataset.projectPreviewTitle ?? "Preview aplikasi";
           title.textContent = projectTitle;
-          frame.title = `Preview aplikasi: ${projectTitle}`;
+          frame.title =
+            language === "ja"
+              ? `アプリのプレビュー: ${projectTitle}`
+              : language === "en"
+                ? `App preview: ${projectTitle}`
+                : `Preview aplikasi: ${projectTitle}`;
           frame.src = url;
           externalLink.href = url;
           externalLink.hidden = false;
-          status.textContent = "Memuat aplikasi…";
+          status.textContent = language === "ja" ? "アプリを読み込み中…" : language === "en" ? "Loading app…" : "Memuat aplikasi…";
           dialog.showModal();
         });
       });
 
       frame.addEventListener("load", () => {
         if (frame.src !== "about:blank") {
-          status.textContent = "Preview dimuat. Coba operasikan aplikasi di area ini.";
+          status.textContent =
+            document.documentElement.lang === "ja"
+              ? "プレビューを読み込みました。このエリアでアプリを操作できます。"
+              : document.documentElement.lang === "en"
+                ? "Preview loaded. Try the app in this area."
+                : "Preview dimuat. Coba operasikan aplikasi di area ini.";
         }
       });
 
@@ -63,7 +79,15 @@ function setupProjectFilters() {
           item.setAttribute("aria-pressed", String(selected));
         });
 
-        if (count) count.textContent = `${visibleCount} proyek ditampilkan`;
+        if (count) {
+          const language = document.documentElement.lang;
+          count.textContent =
+            language === "ja"
+              ? `${visibleCount}件のプロジェクトを表示`
+              : language === "en"
+                ? `${visibleCount} ${visibleCount === 1 ? "project" : "projects"} shown`
+                : `${visibleCount} proyek ditampilkan`;
+        }
         if (empty) empty.hidden = visibleCount > 0;
       });
     });
@@ -155,16 +179,24 @@ function setupCopyEmail() {
       try {
         await navigator.clipboard.writeText(email);
         if (resetTimer) window.clearTimeout(resetTimer);
-        button.textContent = "TERSALIN!";
+        const language = document.documentElement.lang;
+        button.textContent = language === "ja" ? "コピーしました" : language === "en" ? "COPIED!" : "TERSALIN!";
         if (error) error.hidden = true;
-        if (status) status.textContent = "Alamat email tersalin.";
+        if (status) status.textContent =
+          language === "ja" ? "メールアドレスをコピーしました。" : language === "en" ? "Email address copied." : "Alamat email tersalin.";
         resetTimer = window.setTimeout(() => {
-          button.textContent = "SALIN";
+          button.textContent = language === "ja" ? "コピー" : language === "en" ? "COPY" : "SALIN";
           if (status) status.textContent = "";
         }, 2000);
       } catch {
         if (error) {
-          error.textContent = "Salin otomatis tidak tersedia. Silakan pilih alamat email.";
+          const language = document.documentElement.lang;
+          error.textContent =
+            language === "ja"
+              ? "自動コピーを利用できません。メールアドレスを選択してください。"
+              : language === "en"
+                ? "Automatic copying is unavailable. Please select the email address."
+                : "Salin otomatis tidak tersedia. Silakan pilih alamat email.";
           error.hidden = false;
         }
         if (status) status.textContent = "";
@@ -225,10 +257,18 @@ function setupImagePreview() {
       return;
     }
 
-    previewImages = Array.from(imageSet.content.querySelectorAll<HTMLImageElement>("img")).map((item) => ({
-      src: item.getAttribute("src") ?? "",
-      alt: item.alt,
-    }));
+    previewImages = Array.from(imageSet.content.querySelectorAll<HTMLImageElement>("img")).map((item) => {
+      const language = document.documentElement.lang;
+      return {
+        src: item.getAttribute("src") ?? "",
+        alt:
+          language === "ja"
+            ? item.dataset.altJa ?? item.alt
+            : language === "en"
+              ? item.dataset.altEn ?? item.alt
+              : item.alt,
+      };
+    });
     if (previewImages.length === 0 || previewImages.some((item) => !item.src || !item.alt)) {
       console.error("Image preview set contains missing screenshot data.");
       return;

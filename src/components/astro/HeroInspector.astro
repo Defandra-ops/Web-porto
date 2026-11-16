@@ -7,6 +7,8 @@ const pillars = [
     stack: ["Vue 3", "Astro", "Tailwind CSS"],
     description:
       "Antarmuka yang responsif, komponen yang terstruktur, dan pengalaman yang tetap cepat di berbagai perangkat.",
+    descriptionEn: "Responsive interfaces, well-structured components, and fast experiences across devices.",
+    descriptionJa: "レスポンシブな画面、整理されたコンポーネント、さまざまな端末で快適な体験。",
     color: "coral",
   },
   {
@@ -16,6 +18,8 @@ const pillars = [
     stack: ["REST API", "Database", "Integrasi"],
     description:
       "Alur data yang mudah dipahami, terhubung dengan baik, dan dirancang sesuai kebutuhan produk.",
+    descriptionEn: "Understandable, connected data flows designed around product needs.",
+    descriptionJa: "製品のニーズに合わせた、分かりやすく連携の取れたデータフロー。",
     color: "teal",
   },
   {
@@ -25,17 +29,19 @@ const pillars = [
     stack: ["Troubleshooting", "Network", "Deployment"],
     description:
       "Pendekatan praktis untuk diagnosis masalah, dukungan pengguna, dan keandalan operasional.",
+    descriptionEn: "A practical approach to troubleshooting, user support, and operational reliability.",
+    descriptionJa: "問題の診断、ユーザーサポート、運用の信頼性を重視した実践的なアプローチ。",
     color: "yellow",
   },
 ];
 ---
 
-<section class="inspector" aria-label="Pilih fokus keahlian" data-inspector>
+<section class="inspector" aria-label="Pilih fokus keahlian" data-i18n-aria-label-en="Select a skill focus" data-i18n-aria-label-ja="スキル分野を選択" data-inspector>
   <div class="inspector-topline">
     <span class="micro-label">FOCUS INSPECTOR</span>
     <span class="live-status"><i aria-hidden="true"></i> READY</span>
   </div>
-  <div class="inspector-tabs" role="tablist" aria-label="Fokus keahlian">
+  <div class="inspector-tabs" role="tablist" aria-label="Fokus keahlian" data-i18n-aria-label-en="Skill focus" data-i18n-aria-label-ja="スキル分野">
     {pillars.map((pillar, index) => (
       <button
         class:list={[
@@ -49,7 +55,7 @@ const pillars = [
         aria-controls={`pillar-panel-${pillar.id}`}
         data-inspector-tab={pillar.id}
       >
-        {pillar.id}
+        <span data-i18n-en={pillar.id === "frontend" ? "FRONTEND" : pillar.id === "fullstack" ? "BACKEND" : "SUPPORT"} data-i18n-ja={pillar.id === "frontend" ? "フロントエンド" : pillar.id === "fullstack" ? "バックエンド" : "サポート"}>{pillar.id}</span>
       </button>
     ))}
   </div>
@@ -59,6 +65,8 @@ const pillars = [
       class={`inspector-card panel-${pillar.color}`}
       role="tabpanel"
       aria-label={pillar.title}
+      data-i18n-aria-label-en={pillar.id === "frontend" ? "Frontend Engineering" : pillar.id === "fullstack" ? "Backend and API" : "IT Support and Infrastructure"}
+      data-i18n-aria-label-ja={pillar.id === "frontend" ? "フロントエンドエンジニアリング" : pillar.id === "fullstack" ? "バックエンドとAPI" : "ITサポートとインフラ"}
       tabindex="0"
       data-inspector-panel={pillar.id}
       hidden={index !== 0}
@@ -66,7 +74,7 @@ const pillars = [
       <div class="panel-inner">
         <p class="micro-label">{pillar.eyebrow}</p>
         <h2>{pillar.title}</h2>
-        <p class="inspector-description">{pillar.description}</p>
+        <p class="inspector-description" data-i18n-en={pillar.descriptionEn} data-i18n-ja={pillar.descriptionJa}>{pillar.description}</p>
         <ul class="stack-list" aria-label="Teknologi dan area">
           {pillar.stack.map((item) => <li>{item}</li>)}
         </ul>
@@ -74,5 +82,5 @@ const pillars = [
       <span class="panel-index" aria-hidden="true">0{index + 1}</span>
     </article>
   ))}
-  <p class="inspector-hint"><span aria-hidden="true">↳</span> PILIH PILAR UNTUK MELIHAT DETAIL</p>
+  <p class="inspector-hint"><span aria-hidden="true">↳</span> <span data-i18n-en="SELECT A PILLAR TO SEE DETAILS" data-i18n-ja="分野を選択して詳細を見る">PILIH PILAR UNTUK MELIHAT DETAIL</span></p>
 </section>

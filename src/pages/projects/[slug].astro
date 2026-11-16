@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Navbar from "../../components/astro/Navbar.astro";
+import { projectTranslations } from "../../data/projectTranslations";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -13,35 +14,47 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const slug = project.id.replace(/\.md$/, "");
+const translations = projectTranslations[slug];
+const categoryTranslations = {
+  Fullstack: { en: "Fullstack", ja: "フルスタック" },
+  Mobile: { en: "Mobile", ja: "モバイル" },
+  "IT Support": { en: "IT Support", ja: "ITサポート" },
+  "UI/UX": { en: "UI/UX", ja: "UI/UX" },
+};
 ---
 
-<BaseLayout title={`${project.data.title} — Defandra Rifky`}>
+<BaseLayout
+  title={`${project.data.title} — Defandra Rifky`}
+  titleEn={`${translations.en.title} — Defandra Rifky`}
+  titleJa={`${translations.ja.title} — Defandra Rifky`}
+>
   <Navbar />
   <main class="case-study section-shell">
-    <a class="back-link" href="/#projects">← KEMBALI KE PROYEK</a>
+    <a class="back-link" href="/#projects" data-i18n-en="← BACK TO PROJECTS" data-i18n-ja="← プロジェクト一覧へ戻る">← KEMBALI KE PROYEK</a>
     <header class="case-study-header">
-      <p class="section-index">CASE STUDY / {project.data.category.toUpperCase()}</p>
-      <h1>{project.data.title}</h1>
-      <p class="case-study-excerpt">{project.data.excerpt}</p>
-      {project.data.example && <p class="example-notice case-study-notice"><span>!</span> Konten contoh — perbarui dengan studi kasus asli sebelum dipublikasikan.</p>}
+      <p class="section-index">CASE STUDY / <span data-i18n-en={categoryTranslations[project.data.category].en} data-i18n-ja={categoryTranslations[project.data.category].ja}>{project.data.category.toUpperCase()}</span></p>
+      <h1 data-i18n-en={translations.en.title} data-i18n-ja={translations.ja.title}>{project.data.title}</h1>
+      <p class="case-study-excerpt" data-i18n-en={translations.en.excerpt} data-i18n-ja={translations.ja.excerpt}>{project.data.excerpt}</p>
+      {project.data.example && <p class="example-notice case-study-notice"><span>!</span> <span data-i18n-en="Sample content — replace with a real case study before publishing." data-i18n-ja="サンプルコンテンツです。公開前に実際のケーススタディに置き換えてください。">Konten contoh — perbarui dengan studi kasus asli sebelum dipublikasikan.</span></p>}
       <div class="case-study-meta">
-        <div><span>PERAN</span><strong>{project.data.role}</strong></div>
-        <div><span>TEKNOLOGI</span><ul>{project.data.stack.map((item) => <li>{item}</li>)}</ul></div>
+        <div><span data-i18n-en="ROLE" data-i18n-ja="役割">PERAN</span><strong data-i18n-en={translations.en.role} data-i18n-ja={translations.ja.role}>{project.data.role}</strong></div>
+        <div><span data-i18n-en="TECHNOLOGIES" data-i18n-ja="技術">TEKNOLOGI</span><ul>{project.data.stack.map((item) => <li>{item}</li>)}</ul></div>
       </div>
       <div class="case-study-links">
-        {project.data.demoUrl && <a class="brutal-btn button-primary" href={project.data.demoUrl} target="_blank" rel="noreferrer">BUKA LIVE DEMO <span aria-hidden="true">↗</span></a>}
-        {project.data.repoUrl && <a class="brutal-btn case-study-repo" href={project.data.repoUrl} target="_blank" rel="noreferrer">LIHAT REPOSITORY <span aria-hidden="true">↗</span></a>}
-        {project.data.designUrl && <a class="brutal-btn case-study-design" href={project.data.designUrl} target="_blank" rel="noreferrer">LIHAT DESAIN FIGMA <span aria-hidden="true">↗</span></a>}
+        {project.data.demoUrl && <a class="brutal-btn button-primary" href={project.data.demoUrl} target="_blank" rel="noreferrer"><span data-i18n-en="OPEN LIVE DEMO" data-i18n-ja="ライブデモを開く">BUKA LIVE DEMO</span> <span aria-hidden="true">↗</span></a>}
+        {project.data.repoUrl && <a class="brutal-btn case-study-repo" href={project.data.repoUrl} target="_blank" rel="noreferrer"><span data-i18n-en="VIEW REPOSITORY" data-i18n-ja="リポジトリを見る">LIHAT REPOSITORY</span> <span aria-hidden="true">↗</span></a>}
+        {project.data.designUrl && <a class="brutal-btn case-study-design" href={project.data.designUrl} target="_blank" rel="noreferrer"><span data-i18n-en="VIEW FIGMA DESIGN" data-i18n-ja="Figmaデザインを見る">LIHAT DESAIN FIGMA</span> <span aria-hidden="true">↗</span></a>}
       </div>
     </header>
     <div class="case-study-summary">
-      <article><span>THE CHALLENGE</span><h2>Masalah</h2><p>{project.data.problem}</p></article>
-      <article><span>THE APPROACH</span><h2>Pendekatan</h2><p>{project.data.solution}</p></article>
+      <article><span data-i18n-en="THE CHALLENGE" data-i18n-ja="課題">THE CHALLENGE</span><h2 data-i18n-en="Challenge" data-i18n-ja="課題">Masalah</h2><p data-i18n-en={translations.en.problem} data-i18n-ja={translations.ja.problem}>{project.data.problem}</p></article>
+      <article><span data-i18n-en="THE APPROACH" data-i18n-ja="アプローチ">THE APPROACH</span><h2 data-i18n-en="Approach" data-i18n-ja="アプローチ">Pendekatan</h2><p data-i18n-en={translations.en.solution} data-i18n-ja={translations.ja.solution}>{project.data.solution}</p></article>
     </div>
-    <section class="case-study-gallery" aria-label={`Screenshot proyek ${project.data.title}`}>
+    <section class="case-study-gallery" aria-label={`Screenshot proyek ${project.data.title}`} data-i18n-aria-label-en={`Screenshots of ${translations.en.title}`} data-i18n-aria-label-ja={`${translations.ja.title}のスクリーンショット`}>
       <div class="gallery-heading">
-        <p class="section-index">VISUAL / PROJECT SCREENSHOTS</p>
-        <h2>Di balik layar.</h2>
+        <p class="section-index" data-i18n-en="VISUAL / PROJECT SCREENSHOTS" data-i18n-ja="ビジュアル / プロジェクトの画面">VISUAL / PROJECT SCREENSHOTS</p>
+        <h2 data-i18n-en="Behind the scenes." data-i18n-ja="舞台裏。">Di balik layar.</h2>
       </div>
       {project.data.screenshots.length > 0 ? (
         <div class="gallery-grid">
@@ -53,37 +66,48 @@ const { Content } = await render(project);
                 data-image-preview
                 data-image-preview-src={screenshot.src}
                 data-image-preview-alt={screenshot.alt}
+                data-image-preview-alt-en={translations.en.screenshotAlts?.[index] ?? screenshot.alt}
+                data-image-preview-alt-ja={translations.ja.screenshotAlts?.[index] ?? screenshot.alt}
                 data-image-preview-index={index}
                 aria-label={`Perbesar screenshot: ${screenshot.alt}`}
+                data-i18n-aria-label-en={`Zoom screenshot: ${translations.en.screenshotAlts?.[index] ?? screenshot.alt}`}
+                data-i18n-aria-label-ja={`スクリーンショットを拡大: ${translations.ja.screenshotAlts?.[index] ?? screenshot.alt}`}
                 aria-haspopup="dialog"
               >
                 <img src={screenshot.src} alt="" loading="lazy" decoding="async" />
-                <span class="image-zoom-hint" aria-hidden="true">KLIK UNTUK PERBESAR ↗</span>
+                <span class="image-zoom-hint" aria-hidden="true" data-i18n-en="CLICK TO ZOOM ↗" data-i18n-ja="クリックして拡大 ↗">KLIK UNTUK PERBESAR ↗</span>
               </button>
-              <figcaption>{screenshot.alt}</figcaption>
+              <figcaption data-i18n-en={translations.en.screenshotAlts?.[index]} data-i18n-ja={translations.ja.screenshotAlts?.[index]}>{screenshot.alt}</figcaption>
             </figure>
           ))}
         </div>
         <template data-image-preview-set>
-          {project.data.screenshots.map((screenshot) => (
-            <img src={screenshot.src} alt={screenshot.alt} />
+          {project.data.screenshots.map((screenshot, index) => (
+            <img
+              src={screenshot.src}
+              alt={screenshot.alt}
+              data-alt-en={translations.en.screenshotAlts?.[index] ?? screenshot.alt}
+              data-alt-ja={translations.ja.screenshotAlts?.[index] ?? screenshot.alt}
+            />
           ))}
         </template>
       ) : (
         <div class="gallery-placeholder">
-          <div class="preview-toolbar"><span></span><span></span><span></span><small>PROJECT SCREENSHOTS</small></div>
+          <div class="preview-toolbar"><span></span><span></span><span></span><small data-i18n-en="PROJECT SCREENSHOTS" data-i18n-ja="プロジェクトの画面">PROJECT SCREENSHOTS</small></div>
           <div class="gallery-placeholder-content">
             <span class="preview-image-icon" aria-hidden="true">▧</span>
-            <h3>Belum ada screenshot untuk proyek ini.</h3>
+            <h3 data-i18n-en="There are no screenshots for this project yet." data-i18n-ja="このプロジェクトのスクリーンショットはまだありません。">Belum ada screenshot untuk proyek ini.</h3>
             {/* <p>Tambahkan gambar ke <code>public/images/project-screenshots/</code>, lalu daftarkan di frontmatter proyek.</p> */}
           </div>
         </div>
       )}
     </section>
-    <article class="prose-content"><Content /></article>
+    <article class="prose-content" data-project-content><Content /></article>
+    <template data-project-content-template="en" set:html={translations.en.content}></template>
+    <template data-project-content-template="ja" set:html={translations.ja.content}></template>
     <div class="case-study-end">
-      <a class="brutal-btn button-primary" href="/#projects">KEMBALI KE SEMUA PROYEK <span aria-hidden="true">↗</span></a>
+      <a class="brutal-btn button-primary" href="/#projects"><span data-i18n-en="BACK TO ALL PROJECTS" data-i18n-ja="すべてのプロジェクトに戻る">KEMBALI KE SEMUA PROYEK</span> <span aria-hidden="true">↗</span></a>
     </div>
   </main>
-  <footer class="site-footer"><div class="section-shell footer-inner"><a class="wordmark" href="/"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a><p>DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p><span>© {new Date().getFullYear()} DEFANDRA RIFKY</span></div></footer>
+  <footer class="site-footer"><div class="section-shell footer-inner"><a class="wordmark" href="/" aria-label="Defandra Rifky, beranda" data-i18n-aria-label-en="Defandra Rifky, home" data-i18n-aria-label-ja="Defandra Rifky、ホーム"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a><p data-i18n-en="DESIGNED TO BE USEFUL. BUILT WITH INTENT." data-i18n-ja="役立つために設計し、意図を持ってつくる。">DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p><span>© {new Date().getFullYear()} DEFANDRA RIFKY</span></div></footer>
 </BaseLayout>

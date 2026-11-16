@@ -10,20 +10,35 @@ const { certifications, categoryHeadingLevel = 2 } = Astro.props;
 const categories: {
   id: CertificationCategory;
   title: string;
+  titleJa: string;
   description: string;
+  descriptionEn: string;
+  descriptionJa: string;
   emptyMessage: string;
+  emptyMessageEn: string;
+  emptyMessageJa: string;
 }[] = [
   {
     id: "language",
     title: "Language Certification",
+    titleJa: "語学資格",
     description: "Sertifikasi kemampuan bahasa dan komunikasi.",
+    descriptionEn: "Language and communication proficiency credentials.",
+    descriptionJa: "語学およびコミュニケーション能力の資格。",
     emptyMessage: "Belum ada sertifikasi bahasa yang ditambahkan.",
+    emptyMessageEn: "No language certifications have been added yet.",
+    emptyMessageJa: "語学資格はまだ登録されていません。",
   },
   {
     id: "skills",
     title: "Skills Certification",
+    titleJa: "スキル資格",
     description: "Kredensial teknis, pelatihan, dan sertifikasi kompetensi.",
+    descriptionEn: "Technical credentials, training, and skills certifications.",
+    descriptionJa: "技術資格、トレーニング、スキル認定。",
     emptyMessage: "Belum ada sertifikasi keterampilan yang ditambahkan.",
+    emptyMessageEn: "No skills certifications have been added yet.",
+    emptyMessageJa: "スキル資格はまだ登録されていません。",
   },
 ];
 ---
@@ -35,14 +50,14 @@ const categories: {
       <section class="certification-category" aria-labelledby={`certification-${category.id}-title`}>
         <div class="certification-category-heading">
           <div>
-            <p class="micro-label">CATEGORY / {category.id.toUpperCase()}</p>
+            <p class="micro-label">CATEGORY / <span data-i18n-en={category.id.toUpperCase()} data-i18n-ja={category.id === "language" ? "語学" : "スキル"}>{category.id.toUpperCase()}</span></p>
             {categoryHeadingLevel === 2 ? (
-              <h2 id={`certification-${category.id}-title`}>{category.title}</h2>
+              <h2 id={`certification-${category.id}-title`} data-i18n-en={category.title} data-i18n-ja={category.titleJa ?? category.title}>{category.title}</h2>
             ) : (
-              <h3 id={`certification-${category.id}-title`}>{category.title}</h3>
+              <h3 id={`certification-${category.id}-title`} data-i18n-en={category.title} data-i18n-ja={category.titleJa ?? category.title}>{category.title}</h3>
             )}
           </div>
-          <p>{category.description}</p>
+            <p data-i18n-en={category.descriptionEn} data-i18n-ja={category.descriptionJa}>{category.description}</p>
         </div>
         {items.length > 0 ? (
           <div class="certification-grid">
@@ -53,25 +68,27 @@ const categories: {
                     <img
                       src={certification.image.src}
                       alt={certification.image.alt}
+                      data-i18n-alt-en={certification.image.altEn}
+                      data-i18n-alt-ja={certification.image.altJa}
                       loading="lazy"
                       decoding="async"
                     />
                   </figure>
                 )}
                 <div class="certification-card-content">
-                  <p class="micro-label">CREDENTIAL / {String(index + 1).padStart(2, "0")}</p>
+                  <p class="micro-label"><span data-i18n-en="CREDENTIAL" data-i18n-ja="資格">CREDENTIAL</span> / {String(index + 1).padStart(2, "0")}</p>
                   {categoryHeadingLevel === 2 ? (
                     <h3>{certification.title}</h3>
                   ) : (
                     <h4>{certification.title}</h4>
                   )}
                   <p class="certification-issuer">{certification.issuer}</p>
-                  <p class="certification-date">DITERBITKAN / {certification.issuedAt}</p>
+                  <p class="certification-date"><span data-i18n-en="ISSUED" data-i18n-ja="発行日">DITERBITKAN</span> / {certification.issuedAt}</p>
                   {certification.description && (
-                    <p class="certification-description">{certification.description}</p>
+                    <p class="certification-description" data-i18n-en={certification.descriptionEn} data-i18n-ja={certification.descriptionJa}>{certification.description}</p>
                   )}
                   {certification.credentialId && (
-                    <p class="certification-id">ID KREDENSIAL / {certification.credentialId}</p>
+                    <p class="certification-id"><span data-i18n-en="CREDENTIAL ID" data-i18n-ja="資格ID">ID KREDENSIAL</span> / {certification.credentialId}</p>
                   )}
                   {certification.credentialUrl && (
                     <a
@@ -80,7 +97,7 @@ const categories: {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span>Verifikasi kredensial</span><span aria-hidden="true">↗</span>
+                      <span data-i18n-en="Verify credential" data-i18n-ja="資格を確認">Verifikasi kredensial</span><span aria-hidden="true">↗</span>
                     </a>
                   )}
                   {certification.fileUrl && (
@@ -90,7 +107,7 @@ const categories: {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span>Lihat sertifikat (PDF)</span><span aria-hidden="true">↗</span>
+                      <span data-i18n-en="View certificate (PDF)" data-i18n-ja="証明書を見る（PDF）">Lihat sertifikat (PDF)</span><span aria-hidden="true">↗</span>
                     </a>
                   )}
                 </div>
@@ -98,7 +115,7 @@ const categories: {
             ))}
           </div>
         ) : (
-          <p class="certification-category-empty">{category.emptyMessage}</p>
+          <p class="certification-category-empty" data-i18n-en={category.emptyMessageEn} data-i18n-ja={category.emptyMessageJa}>{category.emptyMessage}</p>
         )}
       </section>
     );

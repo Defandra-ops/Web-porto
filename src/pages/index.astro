@@ -8,10 +8,14 @@ import ProjectFilter from "../components/astro/ProjectFilter.astro";
 import CopyEmail from "../components/astro/CopyEmail.astro";
 import CertificationSections from "../components/astro/CertificationSections.astro";
 import { certifications } from "../data/certifications";
+import { projectTranslations } from "../data/projectTranslations";
 
 const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .map(({ id, data }) => ({ ...data, slug: id.replace(/\.md$/, "") }));
+  .map(({ id, data }) => {
+    const slug = id.replace(/\.md$/, "");
+    return { ...data, slug, translations: projectTranslations[slug] };
+  });
 ---
 
 <BaseLayout>
@@ -19,8 +23,8 @@ const projects = (await getCollection("projects"))
   <main>
     <section class="hero section-shell" id="top">
       <div class="hero-copy">
-        <div class="availability"><span aria-hidden="true"></span> TERBUKA UNTUK PELUANG</div>
-        <p class="hero-kicker">PORTOFOLIO / 2026</p>
+        <div class="availability"><span aria-hidden="true"></span> <span data-i18n-en="OPEN TO OPPORTUNITIES" data-i18n-ja="新しい機会を探しています">TERBUKA UNTUK PELUANG</span></div>
+        <p class="hero-kicker" data-i18n-en="PORTFOLIO / 2026" data-i18n-ja="ポートフォリオ / 2026">PORTOFOLIO / 2026</p>
         <h1 class="hero-title">
           <span>DEFANDRA</span>
           <span class="outline-title">RIFKY W<span class="title-period">.</span></span>
@@ -28,8 +32,8 @@ const projects = (await getCollection("projects"))
         <p class="hero-role">FULLSTACK ENGINEER <span>&</span> IT SUPPORT</p>
         <div class="hero-cv-card">
           <div class="hero-cv-card-top">
-            <span class="micro-label">CURRICULUM VITAE</span>
-            <span class="hero-cv-page-count">PDF / 02 HALAMAN</span>
+            <span class="micro-label" data-i18n-en="CURRICULUM VITAE" data-i18n-ja="履歴書">CURRICULUM VITAE</span>
+            <span class="hero-cv-page-count" data-i18n-en="PDF / 02 PAGES" data-i18n-ja="PDF / 全2ページ">PDF / 02 HALAMAN</span>
           </div>
           <div class="hero-cv-card-inner">
             <button
@@ -37,6 +41,8 @@ const projects = (await getCollection("projects"))
               type="button"
               data-cv-preview-open
               aria-label="Lihat pratinjau gambar CV"
+              data-i18n-aria-label-en="Preview CV image"
+              data-i18n-aria-label-ja="履歴書の画像をプレビュー"
               aria-haspopup="dialog"
               aria-controls="cv-preview-dialog"
             >
@@ -60,26 +66,30 @@ const projects = (await getCollection("projects"))
                 aria-haspopup="dialog"
                 aria-controls="cv-preview-dialog"
               >
-                PREVIEW <span aria-hidden="true">↗</span>
+                <span data-i18n-en="PREVIEW" data-i18n-ja="プレビュー">PREVIEW</span> <span aria-hidden="true">↗</span>
               </button>
               <a class="brutal-btn cv-download-button" href="/cv/defandra-rifky-wibowo.pdf" download="CV-Defandra-Rifky-Wibowo.pdf">
-                UNDUH <span aria-hidden="true">↓</span>
+                <span data-i18n-en="DOWNLOAD" data-i18n-ja="ダウンロード">UNDUH</span> <span aria-hidden="true">↓</span>
               </a>
             </div>
           </div>
         </div>
-        <p class="hero-description">
+        <p
+          class="hero-description"
+          data-i18n-en="IT professional with experience in Fullstack Engineering and IT Support, focused on website and Android app development as well as end-to-end database design and management. I have built internal business systems such as HRIS, procurement, and RFID-based access monitoring using PHP, Laravel, CodeIgniter, and MySQL. I bring analytical problem-solving skills and visual design sensitivity to create clean, responsive, user-friendly interfaces."
+          data-i18n-ja="WebサイトやAndroidアプリの開発、データベースの設計・管理に一貫して取り組む、フルスタックエンジニア兼ITサポートです。PHP、Laravel、CodeIgniter、MySQLを用いて、HRIS、調達、RFIDベースの入退室監視などの社内システムを構築してきました。技術的な課題を分析して解決する力とデザイン感覚を活かし、シンプルでレスポンシブ、使いやすいインターフェースを目指しています。"
+        >
           Profesional IT dengan pengalaman sebagai Fullstack Engineer dan IT Support yang berfokus pada pengembangan website, aplikasi Android, serta perancangan dan pengelolaan database secara end-to-end. Terbukti berpengalaman dalam membangun sistem internal perusahaan (seperti HRIS, Procurement, dan sistem monitoring akses berbasis RFID) menggunakan PHP, Laravel, CodeIgniter, dan MySQL. 
           Memiliki kemampuan berpikir analitis dalam memecahkan masalah teknis serta kepekaan desain visual untuk menciptakan antarmuka pengguna yang bersih, responsif, dan ramah pengguna.
         </p>
         <div class="hero-actions">
-          <a class="brutal-btn button-primary" href="#projects">JELAJAHI PROYEK <span aria-hidden="true">↓</span></a>
+          <a class="brutal-btn button-primary" href="#projects"><span data-i18n-en="EXPLORE PROJECTS" data-i18n-ja="プロジェクトを見る">JELAJAHI PROYEK</span> <span aria-hidden="true">↓</span></a>
           <a class="text-link" href="https://github.com/Defandra-ops" target="_blank" rel="noreferrer">
             GITHUB <span aria-hidden="true">↗</span>
           </a>
         </div>
         <div class="hero-meta">
-          <span>BERBASIS DI INDONESIA</span><span class="meta-divider"></span><span>BUILDING WITH PURPOSE</span>
+          <span data-i18n-en="BASED IN INDONESIA" data-i18n-ja="インドネシアを拠点に活動">BERBASIS DI INDONESIA</span><span class="meta-divider"></span><span>BUILDING WITH PURPOSE</span>
         </div>
       </div>
       <div class="hero-visual">
@@ -89,6 +99,8 @@ const projects = (await getCollection("projects"))
           <img
             src="/images/defandra-rifky.png"
             alt="Defandra Rifky berdiri di area publik pada malam hari"
+            data-i18n-alt-en="Defandra Rifky standing in a public area at night"
+            data-i18n-alt-ja="夜の公共スペースに立つDefandra Rifky"
             width="768"
             height="1152"
             fetchpriority="high"
@@ -96,9 +108,9 @@ const projects = (await getCollection("projects"))
           <figcaption><span>DEFANDRA RIFKY W.</span><span>FULLSTACK ENGINEER / IT SUPPORT</span></figcaption>
         </figure>
         <HeroInspector />
-        <div class="visual-caption"><span>FIG. 01</span> MULTI-DISCIPLINARY BY DESIGN</div>
+        <div class="visual-caption"><span>FIG. 01</span> <span data-i18n-en="MULTI-DISCIPLINARY BY DESIGN" data-i18n-ja="複数分野を横断する設計">MULTI-DISCIPLINARY BY DESIGN</span></div>
       </div>
-      <span class="hero-edge-label" aria-hidden="true">SCROLL TO EXPLORE ↓</span>
+      <span class="hero-edge-label" aria-hidden="true" data-i18n-en="SCROLL TO EXPLORE ↓" data-i18n-ja="スクロールして見る ↓">SCROLL TO EXPLORE ↓</span>
     </section>
 
     <MarqueeBanner />
@@ -106,13 +118,13 @@ const projects = (await getCollection("projects"))
     <section class="section-shell projects-section section-pad" id="projects">
       <div class="section-heading">
         <div>
-          <p class="section-index">01 — SELECTED WORKS</p>
-          <h2>Proyek yang<br /><span class="outline-title">punya tujuan.</span></h2>
+          <p class="section-index" data-i18n-en="01 — SELECTED WORKS" data-i18n-ja="01 — 主なプロジェクト">01 — SELECTED WORKS</p>
+          <h2 data-i18n-en="Projects with<br /><span class='outline-title'>a purpose.</span>" data-i18n-ja="目的のある<br /><span class='outline-title'>プロジェクト。</span>" data-i18n-html>Proyek yang<br /><span class="outline-title">punya tujuan.</span></h2>
         </div>
-        <p class="section-intro">
+        <!-- <p class="section-intro">
           Kumpulan studi kasus yang menunjukkan cara saya merancang, membangun, dan
-          menyelesaikan masalah — bukan sekadar daftar teknologi.
-        </p>
+          menyelesaikan masalah bukan sekadar daftar teknologi.
+        </p> -->
       </div>
       <ProjectFilter projects={projects} />
     </section>
@@ -122,35 +134,35 @@ const projects = (await getCollection("projects"))
     <section class="section-shell capabilities-section section-pad" id="skills">
       <div class="section-heading">
         <div>
-          <p class="section-index">02 — TECHNICAL CAPABILITIES</p>
-          <h2>Tools are great.<br /><span class="outline-title">Outcomes matter.</span></h2>
+          <p class="section-index" data-i18n-en="02 — TECHNICAL CAPABILITIES" data-i18n-ja="02 — 技術スキル">02 — TECHNICAL CAPABILITIES</p>
+          <h2 data-i18n-en="Tools are great.<br /><span class='outline-title'>Outcomes matter.</span>" data-i18n-ja="ツールも大切。<br /><span class='outline-title'>成果が重要。</span>" data-i18n-html>Tools are great.<br /><span class="outline-title">Outcomes matter.</span></h2>
         </div>
-        <p class="section-intro">
+        <!-- <p class="section-intro">
           Memadukan pola pikir engineering dan ketelitian dukungan teknis untuk membuat
           sistem yang bekerja baik bagi orang yang menggunakannya.
-        </p>
+        </p> -->
       </div>
       <div class="capabilities-grid">
         <article class="capability-block capability-coral">
           <div class="capability-number">01</div>
-          <p class="micro-label">BUILD THE EXPERIENCE</p>
-          <h3>Frontend<br />Engineering</h3>
-          <p>Antarmuka yang responsif, aksesibel, dan disusun dari komponen yang mudah dikembangkan.</p>
+          <p class="micro-label" data-i18n-en="BUILD THE EXPERIENCE" data-i18n-ja="体験をつくる">BUILD THE EXPERIENCE</p>
+          <h3 data-i18n-en="Frontend<br />Engineering" data-i18n-ja="フロントエンド<br />エンジニアリング" data-i18n-html>Frontend<br />Engineering</h3>
+          <p data-i18n-en="Responsive, accessible interfaces built from components that are easy to extend." data-i18n-ja="拡張しやすいコンポーネントで構成する、レスポンシブで使いやすいインターフェース。">Antarmuka yang responsif, aksesibel, dan disusun dari komponen yang mudah dikembangkan.</p>
           <ul><li>Vue.js</li><li>Astro</li><li>Tailwind CSS</li><li>JavaScript / TypeScript</li></ul>
         </article>
         <article class="capability-block capability-teal">
           <div class="capability-number">02</div>
-          <p class="micro-label">CONNECT THE SYSTEM</p>
-          <h3>Backend<br />& Data</h3>
-          <p>Fondasi API dan integrasi data yang konsisten, mudah dipahami, dan siap diuji.</p>
-          <ul><li>REST API</li><li>Database design</li><li>Authentication</li><li>Integrasi layanan</li></ul>
+          <p class="micro-label" data-i18n-en="CONNECT THE SYSTEM" data-i18n-ja="システムをつなぐ">CONNECT THE SYSTEM</p>
+          <h3 data-i18n-en="Backend<br />&amp; Data" data-i18n-ja="バックエンド<br />とデータ" data-i18n-html>Backend<br />& Data</h3>
+          <p data-i18n-en="Consistent, understandable API foundations and data integrations, ready to be tested." data-i18n-ja="一貫性があり、理解しやすく、テストしやすいAPI基盤とデータ連携。">Fondasi API dan integrasi data yang konsisten, mudah dipahami, dan siap diuji.</p>
+          <ul><li>REST API</li><li>Database design</li><li>Authentication</li>          <li data-i18n-en="Service integration" data-i18n-ja="サービス連携">Integrasi layanan</li></ul>
         </article>
         <article class="capability-block capability-yellow">
           <div class="capability-number">03</div>
-          <p class="micro-label">KEEP IT RUNNING</p>
-          <h3>IT Support<br />& Infra</h3>
-          <p>Diagnosis masalah secara sistematis, dukungan pengguna, dan perhatian pada reliabilitas.</p>
-          <ul><li>Troubleshooting</li><li>Networking</li><li>Deployment</li><li>Dokumentasi teknis</li></ul>
+          <p class="micro-label" data-i18n-en="KEEP IT RUNNING" data-i18n-ja="安定稼働を支える">KEEP IT RUNNING</p>
+          <h3 data-i18n-en="IT Support<br />&amp; Infra" data-i18n-ja="ITサポート<br />とインフラ" data-i18n-html>IT Support<br />& Infra</h3>
+          <p data-i18n-en="Systematic troubleshooting, user support, and a focus on reliability." data-i18n-ja="体系的なトラブル対応、ユーザーサポート、そして信頼性を重視。">Diagnosis masalah secara sistematis, dukungan pengguna, dan perhatian pada reliabilitas.</p>
+          <ul><li>Troubleshooting</li><li>Networking</li><li>Deployment</li>          <li data-i18n-en="Technical documentation" data-i18n-ja="技術ドキュメント">Dokumentasi teknis</li></ul>
         </article>
       </div>
     </section>
@@ -159,37 +171,37 @@ const projects = (await getCollection("projects"))
       <div class="section-shell section-pad experience-inner">
         <div class="section-heading">
           <div>
-            <p class="section-index">03 — EXPERIENCE & EDUCATION</p>
-            <h2>Always learning.<br /><span class="outline-title">Always building.</span></h2>
+            <p class="section-index" data-i18n-en="03 — EXPERIENCE & EDUCATION" data-i18n-ja="03 — 職務経験と学歴">03 — EXPERIENCE & EDUCATION</p>
+            <h2 data-i18n-en="Always learning.<br /><span class='outline-title'>Always building.</span>" data-i18n-ja="学び続け、<br /><span class='outline-title'>つくり続ける。</span>" data-i18n-html>Always learning.<br /><span class="outline-title">Always building.</span></h2>
           </div>
-          <p class="section-intro">
+          <!-- <p class="section-intro">
             Pengalaman dan pendidikan menjadi fondasi cara saya memahami masalah dan
             bekerja bersama tim.
-          </p>
+          </p> -->
         </div>
         <div class="timeline">
           <article class="timeline-row">
-            <span class="timeline-date">PENGALAMAN</span>
+            <span class="timeline-date" data-i18n-en="EXPERIENCE" data-i18n-ja="職務経験">PENGALAMAN</span>
             <div class="timeline-marker" aria-hidden="true"></div>
             <div class="timeline-copy">
               <!-- <span class="example-stamp">LENGKAPI DETAIL</span> -->
               <h3>Fullstack Web Developer</h3>
-              <p>Web Developer · PT Dian Ikrar Perkasa · 2025 - 2026</p>
-              <small>- Mengembangkan sistem web monitoring akses pintu apartemen berbasis teknologi kartu RFID.</small> 
-              <small>- Membangun aplikasi pencatatan daftar hadir otomatis untuk rapat tahunan apartemen menggunakan scan barcode.</small>
-              <small>- Memodernisasi serta memperbarui arsitektur aplikasi procurement dan HRIS lama menjadi lebih bersih dan responsif.</small>
-              <small>- Menyesuaikan dan mengoptimalkan fitur-fitur aplikasi berdasarkan feedback pengguna secara berkelanjutan.</small>
+              <p data-i18n-en="Web Developer · PT Dian Ikrar Perkasa · 2025 - 2026" data-i18n-ja="Web開発者 · PT Dian Ikrar Perkasa · 2025 - 2026">Web Developer · PT Dian Ikrar Perkasa · 2025 - 2026</p>
+              <small data-i18n-en="- Developed a web-based apartment door access monitoring system using RFID cards." data-i18n-ja="- RFIDカードを利用したマンションのドア入退室監視Webシステムを開発。">- Mengembangkan sistem web monitoring akses pintu apartemen berbasis teknologi kartu RFID.</small>
+              <small data-i18n-en="- Built an automated attendance app for annual apartment meetings using barcode scanning." data-i18n-ja="- バーコード読み取りを使ったマンション年次総会向け自動出席記録アプリを構築。">- Membangun aplikasi pencatatan daftar hadir otomatis untuk rapat tahunan apartemen menggunakan scan barcode.</small>
+              <small data-i18n-en="- Modernized legacy procurement and HRIS applications with cleaner, more responsive architecture." data-i18n-ja="- 既存の調達・HRISアプリケーションを、より整理されたレスポンシブな構成に刷新。">- Memodernisasi serta memperbarui arsitektur aplikasi procurement dan HRIS lama menjadi lebih bersih dan responsif.</small>
+              <small data-i18n-en="- Continuously improved application features based on user feedback." data-i18n-ja="- ユーザーのフィードバックをもとに、アプリケーション機能を継続的に改善。">- Menyesuaikan dan mengoptimalkan fitur-fitur aplikasi berdasarkan feedback pengguna secara berkelanjutan.</small>
               
             </div>
           </article>
           <article class="timeline-row">
-            <span class="timeline-date">PENDIDIKAN</span>
+            <span class="timeline-date" data-i18n-en="EDUCATION" data-i18n-ja="学歴">PENDIDIKAN</span>
             <div class="timeline-marker" aria-hidden="true"></div>
             <div class="timeline-copy">
               <!-- <span class="example-stamp">LENGKAPI DETAIL</span> -->
-              <h3>Teknik Informatika</h3>
+              <h3 data-i18n-en="Informatics Engineering" data-i18n-ja="情報工学">Teknik Informatika</h3>
               <p>Universitas Serang Raya · 2020 - 2024</p>
-              <small>IPK 3.60/4.00</small>
+              <small data-i18n-en="GPA 3.60/4.00" data-i18n-ja="GPA 3.60/4.00">IPK 3.60/4.00</small>
             </div>
           </article>
         </div>
@@ -199,26 +211,26 @@ const projects = (await getCollection("projects"))
     <section class="section-shell certifications-section section-pad" id="certifications">
       <div class="section-heading">
         <div>
-          <p class="section-index">04 — CERTIFICATIONS & CREDENTIALS</p>
-          <h2>Belajar terus.<br /><span class="outline-title">Berkembang nyata.</span></h2>
+          <p class="section-index" data-i18n-en="04 — CERTIFICATIONS & CREDENTIALS" data-i18n-ja="04 — 資格・認定">04 — CERTIFICATIONS & CREDENTIALS</p>
+          <h2 data-i18n-en="Keep learning.<br /><span class='outline-title'>Keep growing.</span>" data-i18n-ja="学び続け、<br /><span class='outline-title'>成長し続ける。</span>" data-i18n-html>Belajar terus.<br /><span class="outline-title">Berkembang nyata.</span></h2>
         </div>
-        <p class="section-intro">
+        <p class="section-intro" data-i18n-en="Professional certifications and credentials supporting my journey in technology." data-i18n-ja="テクノロジー分野での歩みを支える専門資格と認定資格。">
           Sertifikasi dan kredensial profesional yang mendukung perjalanan saya di bidang teknologi.
         </p>
       </div>
       <CertificationSections certifications={certifications} categoryHeadingLevel={3} />
       <a class="project-link certifications-all-link" href="/certifications/">
-        <span>Lihat semua sertifikasi</span><span aria-hidden="true">↗</span>
+        <span data-i18n-en="View all certifications" data-i18n-ja="すべての資格を見る">Lihat semua sertifikasi</span><span aria-hidden="true">↗</span>
       </a>
     </section>
 
     <section class="contact-section section-shell section-pad" id="contact">
       <div class="contact-copy">
-        <p class="section-index">05 — LET’S TALK</p>
-        <h2>Have a good<br /><span class="outline-title">problem?</span></h2>
-        <p>Saya terbuka untuk berdiskusi tentang kolaborasi, peluang kerja, atau ide yang perlu diwujudkan.</p>
+        <p class="section-index" data-i18n-en="05 — LET’S TALK" data-i18n-ja="05 — お問い合わせ">05 — LET’S TALK</p>
+        <h2 data-i18n-en="Have a good<br /><span class='outline-title'>problem?</span>" data-i18n-ja="いい課題を<br /><span class='outline-title'>お持ちですか？</span>" data-i18n-html>Have a good<br /><span class="outline-title">problem?</span></h2>
+        <p data-i18n-en="I'm open to discussing collaborations, job opportunities, or ideas ready to be brought to life." data-i18n-ja="コラボレーションや仕事の機会、実現したいアイデアについて、ぜひお話ししましょう。">Saya terbuka untuk berdiskusi tentang kolaborasi, peluang kerja, atau ide yang perlu diwujudkan.</p>
         <CopyEmail />
-        <nav class="contact-social-links" aria-label="Profil media sosial">
+        <nav class="contact-social-links" aria-label="Profil media sosial" data-i18n-aria-label-en="Social media profiles" data-i18n-aria-label-ja="ソーシャルメディア">
           <a class="text-link" href="https://www.linkedin.com/in/defandra-rifky-526309333/" target="_blank" rel="noopener noreferrer">
             LINKEDIN <span aria-hidden="true">↗</span>
           </a>
@@ -233,13 +245,13 @@ const projects = (await getCollection("projects"))
       <div class="contact-card">
         <span class="contact-card-index">OPEN CHANNEL / 01</span>
         <div class="contact-symbol" aria-hidden="true">↗</div>
-        <h3>Let’s make<br />something useful.</h3>
+        <h3 data-i18n-en="Let’s make<br />something useful." data-i18n-ja="役に立つものを<br />一緒につくりましょう。" data-i18n-html>Let’s make<br />something useful.</h3>
         <a
           href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=defandrarifky%40gmail.com"
           target="_blank"
           rel="noopener noreferrer"
         >
-          KIRIM EMAIL <span aria-hidden="true">↗</span>
+          <span data-i18n-en="SEND EMAIL" data-i18n-ja="メールを送る">KIRIM EMAIL</span> <span aria-hidden="true">↗</span>
         </a>
         <span class="contact-card-foot">GITHUB / DEFANDRA-OPS</span>
       </div>
@@ -248,11 +260,11 @@ const projects = (await getCollection("projects"))
       <div class="cv-dialog-content">
         <header class="cv-dialog-header">
           <div>
-            <p class="micro-label">CURRICULUM VITAE / PREVIEW</p>
+            <p class="micro-label" data-i18n-en="CURRICULUM VITAE / PREVIEW" data-i18n-ja="履歴書 / プレビュー">CURRICULUM VITAE / PREVIEW</p>
             <h2 id="cv-dialog-title">Defandra Rifky Wibowo</h2>
           </div>
-          <button class="brutal-btn cv-dialog-close" type="button" data-cv-dialog-close aria-label="Tutup pratinjau CV">
-            TUTUP ×
+          <button class="brutal-btn cv-dialog-close" type="button" data-cv-dialog-close aria-label="Tutup pratinjau CV" data-i18n-aria-label-en="Close CV preview" data-i18n-aria-label-ja="履歴書のプレビューを閉じる">
+            <span data-i18n-en="CLOSE ×" data-i18n-ja="閉じる ×">TUTUP ×</span>
           </button>
         </header>
         <div class="cv-image-preview-pages">
@@ -264,7 +276,7 @@ const projects = (await getCollection("projects"))
               height="1432"
               data-cv-preview-image
             />
-            <figcaption>HALAMAN 01 / 02</figcaption>
+            <figcaption data-i18n-en="PAGE 01 / 02" data-i18n-ja="ページ 01 / 02">HALAMAN 01 / 02</figcaption>
           </figure>
           <figure>
             <img
@@ -274,13 +286,13 @@ const projects = (await getCollection("projects"))
               height="1432"
               data-cv-preview-image
             />
-            <figcaption>HALAMAN 02 / 02</figcaption>
+            <figcaption data-i18n-en="PAGE 02 / 02" data-i18n-ja="ページ 02 / 02">HALAMAN 02 / 02</figcaption>
           </figure>
         </div>
         <footer class="cv-dialog-footer">
-          <span>PDF / 02 HALAMAN</span>
+          <span data-i18n-en="PDF / 02 PAGES" data-i18n-ja="PDF / 全2ページ">PDF / 02 HALAMAN</span>
           <a class="brutal-btn cv-download-button" href="/cv/defandra-rifky-wibowo.pdf" download="CV-Defandra-Rifky-Wibowo.pdf">
-            UNDUH CV <span aria-hidden="true">↓</span>
+            <span data-i18n-en="DOWNLOAD CV" data-i18n-ja="履歴書をダウンロード">UNDUH CV</span> <span aria-hidden="true">↓</span>
           </a>
         </footer>
       </div>
@@ -288,10 +300,10 @@ const projects = (await getCollection("projects"))
   </main>
   <footer class="site-footer">
     <div class="section-shell footer-inner">
-      <a class="wordmark" href="#top"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a>
-      <p>DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p>
+      <a class="wordmark" href="#top" aria-label="Defandra Rifky, beranda" data-i18n-aria-label-en="Defandra Rifky, home" data-i18n-aria-label-ja="Defandra Rifky、ホーム"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a>
+      <p data-i18n-en="DESIGNED TO BE USEFUL. BUILT WITH INTENT." data-i18n-ja="役立つために設計し、意図を持ってつくる。">DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p>
       <a href="https://github.com/Defandra-ops" target="_blank" rel="noreferrer">GITHUB ↗</a>
-      <a href="/#certifications">SERTIFIKASI ↗</a>
+      <a href="/#certifications" data-i18n-en="CERTIFICATIONS ↗" data-i18n-ja="資格 ↗">SERTIFIKASI ↗</a>
       <span>© {new Date().getFullYear()} DEFANDRA RIFKY</span>
     </div>
   </footer>

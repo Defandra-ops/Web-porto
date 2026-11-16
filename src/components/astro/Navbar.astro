@@ -1,27 +1,35 @@
 ---
 const links = [
-  { label: "Proyek", href: "/#projects" },
-  { label: "Keahlian", href: "/#skills" },
-  { label: "Pengalaman", href: "/#experience" },
-  { label: "Sertifikasi", href: "/#certifications" },
+  { label: "Proyek", en: "Projects", ja: "プロジェクト", href: "/#projects" },
+  { label: "Keahlian", en: "Skills", ja: "スキル", href: "/#skills" },
+  { label: "Pengalaman", en: "Experience", ja: "経験", href: "/#experience" },
+  { label: "Sertifikasi", en: "Certifications", ja: "資格", href: "/#certifications" },
 ];
 ---
 
 <header class="site-header">
-  <nav class="nav-shell" aria-label="Navigasi utama">
-    <a class="wordmark" href="/" aria-label="Defandra Rifky, beranda">
+  <nav class="nav-shell" aria-label="Navigasi utama" data-i18n-aria-label-en="Main navigation" data-i18n-aria-label-ja="メインナビゲーション">
+    <a class="wordmark" href="/" aria-label="Defandra Rifky, beranda" data-i18n-aria-label-en="Defandra Rifky, home" data-i18n-aria-label-ja="Defandra Rifky、ホーム">
       <span class="wordmark-mark">DR</span>
       <span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span>
     </a>
     <div class="desktop-nav">
-      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      {links.map((link) => <a href={link.href} data-i18n-en={link.en} data-i18n-ja={link.ja}>{link.label}</a>)}
     </div>
-    <a class="brutal-btn nav-cta" href="/#contact">Hubungi Saya <span aria-hidden="true">↗</span></a>
+    <label class="language-picker">
+      <span class="sr-only" data-i18n-en="Display language" data-i18n-ja="表示言語">Bahasa</span>
+      <select data-language-select aria-label="Bahasa">
+        <option value="id">ID</option>
+        <option value="en">EN</option>
+        <option value="ja">日本語</option>
+      </select>
+    </label>
+    <a class="brutal-btn nav-cta" href="/#contact"><span data-i18n-en="Contact Me" data-i18n-ja="お問い合わせ">Hubungi Saya</span> <span aria-hidden="true">↗</span></a>
     <details class="mobile-menu">
-      <summary aria-label="Buka navigasi">MENU <span aria-hidden="true">+</span></summary>
+      <summary aria-label="Buka navigasi" data-i18n-aria-label-en="Open navigation" data-i18n-aria-label-ja="ナビゲーションを開く"><span data-i18n-en="MENU" data-i18n-ja="メニュー">MENU</span> <span aria-hidden="true">+</span></summary>
       <div class="mobile-menu-panel">
-        {links.map((link) => <a href={link.href}>{link.label}</a>)}
-        <a href="/#contact">Hubungi Saya ↗</a>
+        {links.map((link) => <a href={link.href} data-i18n-en={link.en} data-i18n-ja={link.ja}>{link.label}</a>)}
+        <a href="/#contact" data-i18n-en="Contact Me ↗" data-i18n-ja="お問い合わせ ↗">Hubungi Saya ↗</a>
       </div>
     </details>
   </nav>

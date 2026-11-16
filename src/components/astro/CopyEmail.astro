@@ -5,7 +5,7 @@ const composeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURICom
 
 <div class="copy-email" data-copy-email>
   <a class="email-value" href={composeUrl} target="_blank" rel="noopener noreferrer">{email}</a>
-  <button class="brutal-btn copy-button" type="button" data-copy-button data-copy-text={email}>SALIN</button>
+  <button class="brutal-btn copy-button" type="button" data-copy-button data-copy-text={email} data-i18n-en="COPY" data-i18n-ja="コピー">SALIN</button>
   <p class="copy-error" role="status" data-copy-error hidden></p>
   <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
 </div>

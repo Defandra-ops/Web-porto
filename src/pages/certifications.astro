@@ -7,15 +7,19 @@ import { certifications } from "../data/certifications";
 
 <BaseLayout
   title="Sertifikasi — Defandra Rifky"
+  titleEn="Certifications — Defandra Rifky"
+  titleJa="資格 — Defandra Rifky"
   description="Sertifikasi dan kredensial profesional Defandra Rifky."
+  descriptionEn="Professional certifications and credentials earned by Defandra Rifky."
+  descriptionJa="Defandra Rifkyの専門資格および認定資格。"
 >
   <Navbar />
   <main class="certifications-page section-shell section-pad">
-    <a class="back-link" href="/">← KEMBALI KE BERANDA</a>
+    <a class="back-link" href="/" data-i18n-en="← BACK TO HOME" data-i18n-ja="← ホームに戻る">← KEMBALI KE BERANDA</a>
     <header class="certifications-header">
       <p class="section-index">04 — CERTIFICATIONS & CREDENTIALS</p>
-      <h1>Sertifikasi<span class="outline-title">.</span></h1>
-      <p class="certifications-intro">
+      <h1><span data-i18n-en="Certifications" data-i18n-ja="資格">Sertifikasi</span><span class="outline-title">.</span></h1>
+      <p class="certifications-intro" data-i18n-en="A collection of professional certifications and credentials supporting my journey in technology." data-i18n-ja="テクノロジー分野での歩みを支える専門資格と認定資格の一覧です。">
         Kumpulan sertifikasi dan kredensial profesional yang mendukung perjalanan saya di bidang teknologi.
       </p>
     </header>
@@ -23,16 +27,16 @@ import { certifications } from "../data/certifications";
     <CertificationSections certifications={certifications} />
 
     <div class="certifications-back">
-      <a class="brutal-btn button-primary" href="/#experience">LIHAT PENGALAMAN <span aria-hidden="true">↗</span></a>
-      <a class="text-link" href="/#contact">HUBUNGI SAYA <span aria-hidden="true">↗</span></a>
+      <a class="brutal-btn button-primary" href="/#experience"><span data-i18n-en="VIEW EXPERIENCE" data-i18n-ja="職務経験を見る">LIHAT PENGALAMAN</span> <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="/#contact" data-i18n-en="CONTACT ME" data-i18n-ja="お問い合わせ">HUBUNGI SAYA</a>
     </div>
   </main>
   <footer class="site-footer">
     <div class="section-shell footer-inner">
-      <a class="wordmark" href="/"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a>
-      <p>DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p>
-      <a href="/#projects">PROYEK ↗</a>
-      <a href="/#certifications">SERTIFIKASI ↗</a>
+      <a class="wordmark" href="/" aria-label="Defandra Rifky, beranda" data-i18n-aria-label-en="Defandra Rifky, home" data-i18n-aria-label-ja="Defandra Rifky、ホーム"><span class="wordmark-mark">DR</span><span>DEFANDRA RIFKY<span class="wordmark-dot">.</span></span></a>
+      <p data-i18n-en="DESIGNED TO BE USEFUL. BUILT WITH INTENT." data-i18n-ja="役立つために設計し、意図を持ってつくる。">DESIGNED TO BE USEFUL. BUILT WITH INTENT.</p>
+      <a href="/#projects" data-i18n-en="PROJECTS ↗" data-i18n-ja="プロジェクト ↗">PROYEK ↗</a>
+      <a href="/#certifications" data-i18n-en="CERTIFICATIONS ↗" data-i18n-ja="資格 ↗">SERTIFIKASI ↗</a>
       <span>© {new Date().getFullYear()} DEFANDRA RIFKY</span>
     </div>
   </footer>
